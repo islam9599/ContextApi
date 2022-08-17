@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Card, Container, Img, Title } from "./style";
+import { PhotoContext } from "../../store";
 
 const Body = ({ getData }) => {
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [photo, setPhoto] = useContext(PhotoContext);
+
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/photos")
       .then((response) => response.json())
-      .then((json) => setData(json))
+      .then((json) => setPhoto(json))
       .then(() => setLoading(false));
   }, []);
-  useEffect(() => {
-    getData(data);
-  }, [data, getData]);
 
   return (
     <Container>
       {loading && <Title>Loading...</Title>}
-      {data.map(({ id, url, title }) => {
+      {photo.map(({ id, url, title }) => {
         return (
           <Card key={id}>
             <Img src={url} />
